@@ -68,7 +68,7 @@ the bin directory of your workspace and execute your script with `./HacKSU_proje
 (assuming you named the directory HacKSU_project).
 
 
-# Variables
+# [Variables](https://github.com/hacksu/go-example/tree/4bdea6691e466e107bbef0236b3e87ef1ba77bac)
 
 Variables might be one of the stranger looking things in Go. First variables in
 Go have type unlike languages like JavaScript or Python so we have to decided when
@@ -83,3 +83,49 @@ print it with `fmt.Println("Hello Person " + string(person))` note we have to co
 to a string with `string(...)` before we can add two strings. This holds with all
 conversions. Go will never assume a conversion between two types. We can also just
 pass it as another argument like `fmt.Println("Hello Person", person)`
+
+# Control
+
+Right now we have the tools to make a very nice program that does exactly one thing
+if we want to have it vary what it does we use things like for loops and if statements.
+
+Go only has one type of loop, the for loop so they've done a lot to make it flexible.
+
+The version that most closely matches what we're used to is something like `for i := 0; i < 100; i++`
+
+It basically looks like C++, but we don't put parenthese around everything. We can
+easily use this to great 10 people instead of just one
+
+    for person := 0; person < 10; person++ {
+       fmt.Println("Hello Person", person)
+    }
+
+People who have already done programing were probably asking from the moment I
+started talking about how we're supposed to do while loops. It's easy enough,
+we just leave the init and the step stages empty like `for is_more()` so the above
+could also be written as
+
+    person := 0
+    for person < 10{
+       fmt.Println("Hello Person", person)
+       person++
+    }
+
+If we don't give any arguments like `for {}` we get an infinite loop.
+
+If statements work the same way and interestingly we can also had pre statements. While I personally can't stand them switch statements also work exactly as expected though it is assumed
+each block ends in break.
+
+There is a one flow control statement in Go, however, that may be more confusing
+for someone coming from C++ `defer` specifies that a function listed should be
+executed at the end of the function. It's important for cleanup because it means
+if something goes wrong and the function needs to get exited early critically
+cleanup code will still get run. We're just going to use it for fun though so we
+can do
+
+    func main() {
+   	  defer fmt.Println("two")
+   	  fmt.Println("one")
+    }
+
+and it will get printed in the right order.
