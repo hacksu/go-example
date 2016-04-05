@@ -84,7 +84,7 @@ to a string with `string(...)` before we can add two strings. This holds with al
 conversions. Go will never assume a conversion between two types. We can also just
 pass it as another argument like `fmt.Println("Hello Person", person)`
 
-# Control
+# [Control](https://github.com/hacksu/go-example/tree/23b426cb7485b3dd752d64b7f994c87b3c411b74)
 
 Right now we have the tools to make a very nice program that does exactly one thing
 if we want to have it vary what it does we use things like for loops and if statements.
@@ -129,3 +129,59 @@ can do
     }
 
 and it will get printed in the right order.
+
+# Functions
+
+You can probably guess how to define your own function but lets do it for real.
+
+Lets define a function to return if a number is prime and if not the first number
+it can be divided by. We will not be doing this efficiently
+
+We need our function to take an int and for now return another int to hold the
+first number it can be divided by (we'll just make it less than or equal to  0 if
+we can't find anything) that would look like.
+
+func is_prime(n int) int {
+	return 0
+}
+
+before we get to actually implement the function I'd like to explain what exactly this means.
+
+We start with the `func` keyword to tell the compiler we are defining a function.
+we list the identifier next. If we want it to be available from other packages we'd
+need to make this uppercase. Then we define the arguments with the type listed at
+the end as normal. Finally, at the very end we define the type the function returns.
+
+The simplest way to check if a number is a prime is to start at 2 and check if it
+is divisible by any number between two and it's square root. We can do this with a
+for loop like so `for i := 2; i <= n/2; ++i` We're going to use half n as a terrible
+terrible approximation of sqrt(n). If you don't know % is the remainder operator.
+
+If you remember doing long devision way back you may remember the remainder, it's
+the bit that is left over after you perform integer devision so if the remainder
+is ever 0 we know that the number was evenly divided so we end up with.
+
+    func is_prime(n int) int {
+  	 for i := 2; i < n/2; i++ {
+   	 	 if n % i == 0 {
+   			 return i
+   		 }
+   	 }
+  	 return -1;
+    }
+
+  One more thing, this is well and good, but most of the time we just want to know
+  if the number is a prime not anything about it's factors. Luckily Go lets us
+  return multiple things. We do it like this
+
+     func is_prime(n int) (bool, int) {
+       	for i := 2; i < n/2; i++ {
+       		if n % i == 0 {
+       			return false, i
+  	     	}
+       	}
+       	return true, -1;
+     }
+
+ While we can be done we can't then directly use it in an if statement. Lets just
+ use the version that returns an int
