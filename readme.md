@@ -27,7 +27,7 @@ thing like `export GOPATH=$HOME/work` into your `.profile` if your on a Mac or a
 Linux box and search for environmental variables and add a new one with the name
 GOPATH if your on Windows.
 
-# Hello... go
+# [Hello... go](https://github.com/hacksu/go-example/tree/70e55a6f72001daaaa82c729ab8f23d8e6f21599)
 
 Go is a bit strange in that everything about using it revolves around the a workspace
 directory defined by the above mentioned environmental variable. To create our code
@@ -66,3 +66,20 @@ Compile it by typing typing `go install` either by itself from inside the projec
 directory or type `go install ` and the name you gave the directory. Then cd into
 the bin directory of your workspace and execute your script with `./HacKSU_project`
 (assuming you named the directory HacKSU_project).
+
+
+# Variables
+
+Variables might be one of the stranger looking things in Go. First variables in
+Go have type unlike languages like JavaScript or Python so we have to decided when
+we create a variable what kind of stuff we want the variables to hold, but unlike C++
+or Java go will by default guess the type of a variable which can make it feel
+at times like an untyped language. The strangest part though is that the type goes at
+the end so to define an int i we use `var i int = 0` or `var i = 0` and it will
+assume a type of int if you want to leave out even the var we can do that by using
+`:=` like `i := 1` so if we want to store who we're greeting as a variable we can
+do it by defining a variable like `person := 0` (we'll CS people) then we can either
+print it with `fmt.Println("Hello Person " + string(person))` note we have to convert
+to a string with `string(...)` before we can add two strings. This holds with all
+conversions. Go will never assume a conversion between two types. We can also just
+pass it as another argument like `fmt.Println("Hello Person", person)`
