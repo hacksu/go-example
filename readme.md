@@ -130,7 +130,8 @@ can do
 
 and it will get printed in the right order.
 
-# Functions
+# [Functions](https://github.com/hacksu/go-example/commit/0f2ef9b88f510a7d69d50258152cdec0750a2e38)
+
 
 You can probably guess how to define your own function but lets do it for real.
 
@@ -162,7 +163,7 @@ the bit that is left over after you perform integer devision so if the remainder
 is ever 0 we know that the number was evenly divided so we end up with.
 
     func is_prime(n int) int {
-  	 for i := 2; i < n/2; i++ {
+  	 for i := 2; i <= n/2; i++ {
    	 	 if n % i == 0 {
    			 return i
    		 }
@@ -175,7 +176,7 @@ is ever 0 we know that the number was evenly divided so we end up with.
   return multiple things. We do it like this
 
      func is_prime(n int) (bool, int) {
-       	for i := 2; i < n/2; i++ {
+       	for i := 2; i <= n/2; i++ {
        		if n % i == 0 {
        			return false, i
   	     	}
@@ -184,4 +185,68 @@ is ever 0 we know that the number was evenly divided so we end up with.
      }
 
  While we can be done we can't then directly use it in an if statement. Lets just
- use the version that returns an int
+ use the version that returns an int.
+
+
+
+# Go... faster
+
+What if we want to do something more complicated such as list all the primes between
+two numbers. Let's make a function to do that.
+
+   func primes(start, end int) []int {
+	   primes := make([]int, 0)
+
+   	for i := start; i < end; i++ {
+	   	if is_prime(i) < 0 {
+		   	primes = append(primes, i)
+		   }
+	   }
+	   return primes
+    }
+
+This uses slices which are basically Go's version of vectors. They are an expandable
+list of items
+
+
+Lets run this to get a lot of big primes. Say `fmt.Println(primes(100000, 200000))`
+
+It might take a while. Luckily one of Go's great strengths is in parallelization.
+This is something you may have heard have and if so you probably think of it as
+a huge pain. Luckily go supports multitasking on a very low level in the language
+which makes tasks like this easy. We can start a Goroutine (Go's name a function
+running on another thread) very simply. Just put `go` in front of a function call.
+
+Let's make a simple example.
+
+    package main
+
+    import "fmt"
+    import "time"
+
+    func main() {
+    	go say("hello")
+    	go say("world")
+    	var input string
+    	fmt.Scanln(&input)
+    	fmt.Println("done")
+    }
+
+    func say(message string) {
+    	for {
+    		fmt.Println(message)
+    		time.Sleep(100*time.Millisecond)
+    	}
+    }
+
+We need to read something at the end because if we don't the program will exit right
+away when the main function ends
+
+There's a problem though. We can't get values back from our Goroutines at the moment
+we'll used something called a channel for that. It's a something in Go that's designed
+to solve this problem. We can push something into our channel in our Goroutine
+and pull it out in the main thread. It will even block (wait) if there is no space
+in the channel. We create a channel with `make` again like `primes := make(chan []int)`.
+We can make a channel of any type if we want.  
+
+Lets do it. First lets create a new function named something like fast_primes
